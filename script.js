@@ -193,6 +193,7 @@ function safeProductListToOrderHistory() {
 function refreshAndShowHistory() {
   historyDiv = $(".orderHistoryContainer").first();
   historyDiv.empty();
+  try {
   orderHistory.forEach((order) => {
     let button = document.createElement("button");
     button.onclick = () => {loadOrderFromHistory(order)}
@@ -200,6 +201,14 @@ function refreshAndShowHistory() {
     button.className = "historyButton";
     historyDiv.append(button);
   })
+  } catch (error) {
+    console.log("Error while loading order history: " + error.message);
+    if(confirm("Fehler beim Laden des Verlaufs: " + error.message)){
+      localStorage.removeItem(nameOfOrderHistoryInLocalStorage);
+      orderHistory = [];
+      refreshAndShowHistory();
+    }
+  }
   let clearHistoryButton = document.createElement("button")
   clearHistoryButton.innerHTML = "Clear History";
   clearHistoryButton.className = "clearHistoryButton";
@@ -248,6 +257,7 @@ function vibrate(ms){
   let vibe = document.getElementById("vibSwitch");
   if(vibe.checked) {
     try {
+      alert("Vibrate for " + ms + "ms");
       navigator.vibrate(ms);
     } catch (error) {
       alert(error.message);
