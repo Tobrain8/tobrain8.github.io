@@ -270,6 +270,7 @@ function remove(produkt){
   kassenTabelle.innerHTML = "";
   kassenTabelleErstellen();
   vibrate(SHORT_VIBRATION)
+  loadedOrderFromHistoryHasChanged = true; 
 }
 
 
