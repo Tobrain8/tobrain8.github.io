@@ -257,10 +257,9 @@ function vibrate(ms){
   let vibe = document.getElementById("vibSwitch");
   if(vibe.checked) {
     try {
-      alert("Vibrate for " + ms + "ms");
       navigator.vibrate(ms);
     } catch (error) {
-      alert(error.message);
+      alert(error.message + " Um diese meldung zu unterdrücken schalte das Vibrationsfeature aus.");
       console.log("Vibration didn't work (Can your device vibrate?): " + error.message);
     }
   }
