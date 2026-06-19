@@ -6,24 +6,24 @@ const SHORT_VIBRATION = 40;
 const LONG_VIBRATION = 120;
 
 class Produkt{
-  constructor(name, price, pfand, deal = null, background = "lightgreen"){
+  constructor(name, price, pfand, deals = null, background = "lightgreen"){
     this.name = name;
     this.amount = 0;
     this.price = price;
     this.pfand = pfand;
     this.background = background;
-    this.deal = deal;
+    this.deals = deals;
   }
 }
 
-productList.push(new Produkt("Gilde", 3.5, 1, deal={amount: 10, price: 30}));
-productList.push(new Produkt("Weizen", 5, 2));
-productList.push(new Produkt("0,0 Gilde", 3, 1));
-productList.push(new Produkt("AfG", 2.5, 1));
-productList.push(new Produkt("Kurze", 2, 0, deal={amount: 10, price: 20}));
-productList.push(new Produkt("Mische", 6, 1, deal={amount: 4, price: 20}));
-productList.push(new Produkt("Glas", 1, 0, null, background="lightgrey"));//{Pfand muss in dieser Reihenfolge an 
-productList.push(new Produkt("-Pfand", -1, 0, null, background="#ff9428"));//}den letzten 2 pos. des arrays bleiben.
+productList.push(new Produkt("Gilde", 3.5, 1, deals=[{amount: 10, price: 30}, {amount: 6, price: 20}]));
+productList.push(new Produkt("Weizen", 5, 2, deals=[]));
+productList.push(new Produkt("0,0 Gilde", 3, 1, deals=[]));
+productList.push(new Produkt("AfG", 2.5, 1, deals=[]));
+productList.push(new Produkt("Kurze", 2, 0, deals=[{amount: 10, price: 20}]));
+productList.push(new Produkt("Mische", 6, 1, deals=[{amount: 4, price: 20}]));
+productList.push(new Produkt("Glas", 1, 0, deals=[], null, background="lightgrey"));//{Pfand muss in dieser Reihenfolge an 
+productList.push(new Produkt("-Pfand", -1, 0, deals=[], null, background="#ff9428"));//}den letzten 2 pos. des arrays bleiben.
 
 
 function main(){
@@ -31,6 +31,7 @@ function main(){
   addProduktButtons()
   kassenTabelleErstellen();
   refreshAndShowHistory();
+  sortDeals();
 }
 
 function fetchOrderHistory() {
@@ -145,6 +146,16 @@ function kassenTabelleErstellen() {
   kassenTabelle.append(getTotalzeile(total.toFixed(2)));
 }
 
+function sortDeals() {
+  productList.forEach((product) => {
+    if(product.deals){
+      product.deals.sort((a, b) => {
+        return a.price/a.amount - b.price/b.amount;
+      })
+    }
+  })
+}
+
 function reset(){
   let kassenTabelle = document.getElementById("kassenTabelle");
   productList.forEach((produkt)=>{
@@ -185,14 +196,13 @@ function refreshAndShowHistory() {
   orderHistory.forEach((order) => {
     let button = document.createElement("button");
     button.onclick = () => {loadOrderFromHistory(order)}
-    debugger;
     button.innerHTML = "Total: " + getTotal(order) + "€";
     button.className = "historyButton";
     historyDiv.append(button);
   })
   let clearHistoryButton = document.createElement("button")
   clearHistoryButton.innerHTML = "Clear History";
-  clearHistoryButton.className = "clearHistoryButton"
+  clearHistoryButton.className = "clearHistoryButton";
   clearHistoryButton.onclick = () => {
     if(confirm("Sicher, dass der Verlauf gelöscht werden soll?")) {
       localStorage.removeItem(nameOfOrderHistoryInLocalStorage);
@@ -215,11 +225,13 @@ function loadOrderFromHistory(order) {
 function getSumOfProduct(product) {
     let amountLeft = product.amount;
     let sum = 0;
-    if(product.deal)
-      while(amountLeft >= product.deal.amount){
-        sum += product.deal.price;
-        amountLeft -= product.deal.amount;
+    for(let i = 0; i < product.deals.length; i++){
+      let deal = product.deals[i];
+      while(amountLeft >= deal.amount){
+        sum += deal.price;
+        amountLeft -= deal.amount;
       }
+    }
     sum += amountLeft * product.price;
     return sum;
   }
@@ -238,6 +250,7 @@ function vibrate(ms){
     try {
       navigator.vibrate(ms);
     } catch (error) {
+      alert(error.message);
       console.log("Vibration didn't work (Can your device vibrate?): " + error.message);
     }
   }
