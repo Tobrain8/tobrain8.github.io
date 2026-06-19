@@ -18,9 +18,10 @@ class Produkt{
 
 productList.push(new Produkt("Gilde", 3.5, 1, deal={amount: 10, price: 30}));
 productList.push(new Produkt("Weizen", 5, 2));
+productList.push(new Produkt("0,0 Gilde", 3, 1));
 productList.push(new Produkt("AfG", 2.5, 1));
-productList.push(new Produkt("Kurze", 2, 0));
-productList.push(new Produkt("Mische", 6, 1, deal={amount: 5, price: 25}));
+productList.push(new Produkt("Kurze", 2, 0, deal={amount: 10, price: 20}));
+productList.push(new Produkt("Mische", 6, 1, deal={amount: 4, price: 20}));
 productList.push(new Produkt("Glas", 1, 0, null, background="lightgrey"));//{Pfand muss in dieser Reihenfolge an 
 productList.push(new Produkt("-Pfand", -1, 0, null, background="#ff9428"));//}den letzten 2 pos. des arrays bleiben.
 
