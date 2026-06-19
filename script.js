@@ -22,8 +22,8 @@ productList.push(new Produkt("0,0 Gilde", 3, 1, deals=[]));
 productList.push(new Produkt("AfG", 2.5, 1, deals=[]));
 productList.push(new Produkt("Kurze", 2, 0, deals=[{amount: 10, price: 20}]));
 productList.push(new Produkt("Mische", 6, 1, deals=[{amount: 4, price: 20}]));
-productList.push(new Produkt("Glas", 1, 0, deals=[], null, background="lightgrey"));//{Pfand muss in dieser Reihenfolge an 
-productList.push(new Produkt("-Pfand", -1, 0, deals=[], null, background="#ff9428"));//}den letzten 2 pos. des arrays bleiben.
+productList.push(new Produkt("Glas", 1, 0, deals=[], background="lightgrey"));//{Pfand muss in dieser Reihenfolge an 
+productList.push(new Produkt("-Pfand", -1, 0, deals=[], background="#ff9428"));//}den letzten 2 pos. des arrays bleiben.
 
 
 function main(){
